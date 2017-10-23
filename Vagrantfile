@@ -28,7 +28,7 @@ $instance_name_prefix = "core"
 $enable_serial_logging = false
 $share_home = false
 $vm_gui = false
-$vm_memory = 1024
+$vm_memory = 768
 $vm_cpus = 1
 $vb_cpuexecutioncap = 100
 $shared_folders = {}
@@ -156,6 +156,7 @@ Vagrant.configure("2") do |config|
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_PATH}", :destination => "/tmp/vagrantfile-user-data"
         config.vm.provision :shell, inline: "mkdir /var/lib/coreos-vagrant", :privileged => true
         config.vm.provision :shell, :inline => "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", :privileged => true
+        config.vm.provision :shell, :inline => "coreos-cloudinit --from-file /var/lib/coreos-vagrant/vagrantfile-user-data", :privileged => true
       end
 
       config.vm.provider :virtualbox do |vb|
